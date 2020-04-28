@@ -99,6 +99,17 @@ Based on initial understanding of the readme the sharetribe deployment will have
 	open "http://`docker-machine ip default`:3000"
 	```
 
+11. Start the worker processs
+
+	``` sh
+	docker-compose exec web bundle exec rake jobs:work
+	```
+
+11. Fix **vendor-bundle** errors by running the asset precompilation
+
+	``` sh
+	docker-compose exec web bundle exec rake assets:precompile
+	```
 
 ### Links ###
 

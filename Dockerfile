@@ -62,7 +62,7 @@ RUN curl -sfSL \
 # - nginx - used to serve maintenance mode page
 # - MySQL 5.7 repo and client libs
 COPY script/setup-mysql-apt-repo.sh /root/
-RUN apt-get install -y nginx \
+RUN apt-get install -y nginx sphinxsearch imagemagick \
   && /root/setup-mysql-apt-repo.sh \
   && apt-get install -y libmysqlclient-dev
 
@@ -126,13 +126,7 @@ RUN mkdir -p \
 	app/assets/webpack \
 	public/assets \
 	public/webpack \
-	&& chown -R app:app \
-	config \
-	app/assets/javascripts \
-	app/assets/webpack \
-	client/app/ \
-	public/assets \
-	public/webpack
+	&& chown -R app:app /opt/app
 USER app
 
 # If assets.tar.gz file exists in project root
