@@ -75,6 +75,10 @@ bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
 	``` sh
 	docker-compose up -d
 	```
+	
+	Current deployment looks like the following
+	
+	![Current Deployment](deployment-02.png)
 
 9. Populate the database and restart the web container
 
@@ -87,6 +91,8 @@ bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
 	```
 
 10. Application should hopefully be running on port `3000`
+
+
 
 ### Links ###
 

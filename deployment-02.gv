@@ -1,0 +1,7 @@
+digraph G {
+  label="Sharetribe"
+  web[label="{FE+BE|Web}",shape=record]
+  db[label="{mysql|DB}",shape=record]
+  redis[label="{Redis|Cache}",shape=record]
+  web -> {db,redis,db}
+}
