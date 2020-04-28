@@ -1,0 +1,9 @@
+digraph G {
+  label="Sharetribe"
+  web[label="{FE+BE|Web}",shape=record]
+  db[label="{mysql|DB}",shape=record]
+  worker[label="Worker",shape=box]
+  sphinx[label="{Sphinx|Search}",shape=record]
+  memc[label="{Memcached|Cache}",shape=record]
+  web -> {db,sphinx,worker,memc}
+}

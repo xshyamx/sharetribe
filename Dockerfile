@@ -107,16 +107,41 @@ ENTRYPOINT ["script/entrypoint.sh"]
 
 # Fix ownership of directories that need to be writable
 USER root
+
+
+# add enviroment config
+RUN sed -E \
+	-e 's/# ADD DATABASE USERNAME/<%= ENV["DB_USER"] %>/' \
+	-e 's/# ADD DATABASE PASSWORD/<%= ENV["DB_PASSWORD"] %>/' \
+	-e 's/sharetribe_.*$/<%= ENV["DB_NAME"] %>/' \
+	-e 's/localhost$/<%= ENV["DB_HOST"] %>/' \
+	config/database.example.yml > config/database.yml \
+	&& cp config/config.example.yml config/config.yml
+
+RUN echo "\n\
+secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>\n\
+active_storage.service: local\n\
+amazon:\n\
+  service: S3\n\
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>\n\
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>\n\
+  region: <%= ENV['AWS_DEFAULT_REGION'] %>\n\
+  bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
+" >> config/config.yml
+
+RUN apt-get install -y mysql-client
+
 RUN mkdir -p \
-          app/assets/webpack \
-          public/assets \
-          public/webpack \
-    && chown -R app:app \
-       app/assets/javascripts \
-       app/assets/webpack \
-       client/app/ \
-       public/assets \
-       public/webpack
+	app/assets/webpack \
+	public/assets \
+	public/webpack \
+	&& chown -R app:app \
+	config \
+	app/assets/javascripts \
+	app/assets/webpack \
+	client/app/ \
+	public/assets \
+	public/webpack
 USER app
 
 # If assets.tar.gz file exists in project root
