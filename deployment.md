@@ -39,17 +39,20 @@ Based on initial understanding of the readme the sharetribe deployment will have
 4. Same for the `config/config.yml` to pick up credentials for S3. There seems to be a way to configure local but, it doesn't reveal itself :/. `secret_key_base` is also expected but, for some reason not part of the default configuration
 
 	``` dockerfile
-	RUN cp config/config.example.yml config/config.yml && \
-	echo "\n\
-	secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>\n\
-	active_storage.service: local\n\
-	amazon:\n\
-service: S3\n\
-access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>\n\
-secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>\n\
-region: <%= ENV['AWS_DEFAULT_REGION'] %>\n\
-bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
-	" >> config/config.yml
+	ADD/config.yml config/config.yml
+	```
+
+	Contents of [`config.yml`](config.yml)
+
+	``` yaml
+    secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
+    active_storage.service: local
+    amazon:
+      service: S3
+      access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+      secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+      region: <%= ENV['AWS_DEFAULT_REGION'] %>
+      bucket: <%= ENV['SHARETRIBE_BUCKET'] %>
 	```
 
 5. MySQL client is also required to run the database migrations :|
@@ -92,9 +95,13 @@ bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
 
 10. Application should hopefully be running on port `3000`
 
+	```sh
+	open "http://`docker-machine ip default`:3000"
+	```
 
 
 ### Links ###
 
+- [Deploying on Amazon AWS (Free-Tier) with EC2, RDS & S3](https://gist.github.com/pcm211/10950bf5447a51fdcd1c)
 - [Deploying Sharetribe to Heroku](https://gist.github.com/svallory/d08e9baa88e18d691605)
 - [How to deploy FTW to production](https://www.sharetribe.com/docs/ftw-hosting/how-to-deploy-ftw-to-production/)

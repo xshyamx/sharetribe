@@ -73,3 +73,4 @@ client/.vimrc
 storage/
 
 storage/
+*.html

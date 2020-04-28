@@ -115,19 +115,10 @@ RUN sed -E \
 	-e 's/# ADD DATABASE PASSWORD/<%= ENV["DB_PASSWORD"] %>/' \
 	-e 's/sharetribe_.*$/<%= ENV["DB_NAME"] %>/' \
 	-e 's/localhost$/<%= ENV["DB_HOST"] %>/' \
-	config/database.example.yml > config/database.yml \
-	&& cp config/config.example.yml config/config.yml
+	config/database.example.yml > config/database.yml
 
-RUN echo "\n\
-secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>\n\
-active_storage.service: local\n\
-amazon:\n\
-  service: S3\n\
-  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>\n\
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>\n\
-  region: <%= ENV['AWS_DEFAULT_REGION'] %>\n\
-  bucket: <%= ENV['SHARETRIBE_BUCKET'] %>\n\
-" >> config/config.yml
+
+ADD config.yml config/config.yml
 
 RUN apt-get install -y mysql-client
 
