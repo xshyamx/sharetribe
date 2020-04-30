@@ -359,7 +359,7 @@ default: &default_settings
 
   # Default Google Maps API key for communities that don't specify one
   # Default is not to use Google Maps API key
-  google_maps_key: <%= ENV['GOOGLE_MAPS_KEY'] %>
+  google_maps_key:
 
   # Path or URL for landing page assets.
   #
@@ -498,6 +498,9 @@ production: &production_settings
   <<: *default_settings
 
   eager_load: true
+
+  # Skip email confirmation
+  skip_email_confirmation: true
 
   log_level: INFO
   stripe_private_key_pattern: "\\Ask_live_.{24,200}\\z"

@@ -117,11 +117,6 @@ RUN sed -E \
 	-e 's/localhost$/<%= ENV["DB_HOST"] %>/' \
 	config/database.example.yml > config/database.yml
 
-
-ADD config.yml config/config.yml
-
-RUN apt-get install -y mysql-client
-
 RUN mkdir -p \
 	app/assets/webpack \
 	public/assets \

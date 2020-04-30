@@ -5,33 +5,48 @@ services:
     build: .
     ports:
       - "3000:3000"
-    environment:
-      GOOGLE_MAPS_KEY: key
-      RAILS_ENV: development
-      DOCKER_HOST_IP: 192.168.99.103
-      DB_NAME: sharetribe
-      DB_USER: sharetribe
-      DB_PASSWORD: sharetribe
-      DB_HOST: db
-      SECRET_KEY_BASE: efb45049072749e140e75269195e43bcea254bd44ad8b53c53d12670a0e6e350ffb4eeb534a3f29e1755bf1a96c50fc113500449bc37bc34d938f79e83017cb4
-      redis_host: redis
-      AWS_ACCESS_KEY_ID: sharetribe
-      AWS_SECRET_ACCESS_KEY: sharetribe
-      AWS_DEFAULT_REGION: us-east-1
-      SHARETRIBE_BUCKET: sharetribe
+      - "1080:1080"
+    env_file:
+      - ./web.env
 #  worker:
-#    build: .
-#    env_file: .env
+#    image: sharetribe/web
+#    volumes:
+#      - image-vol:/opt/app/public/system
+#    env_file:
+#      - ./web.env
 #    environment:
 #      - QUEUES=default,paperclip,mailers
 #      - MAGICK_MAP_LIMIT=64MiB
 #      - MAGICK_MEMORY_LIMIT=256MiB
 #      - MAGICK_TIME_LIMIT=30
 #    command: bundle exec rake jobs:work
-  redis:
+#  search:
+#    image: sharetribe/web
+##    command: '/bin/bash -l -c "bundle exec rake ts:configure ts:index; searchd --nodetach --pidfile --config config/development.sphinx.conf"'
+#    command: 'bundle exec rake ts:configure ts:index; searchd --nodetach --pidfile --config config/development.sphinx.conf'
+#    volumes:
+#      - image-vol:/opt/app/public/system
+#    env_file:
+#      - ./web.env
+#    environment:
+#      SPHINX_HOST: ""
+#    ports:
+#      - "3563:3563"
+  cache:
     image: redis:5.0.9-alpine
+#  s3:
+#    image: minio/minio
+#    command: minio server /data
+#    ports:
+#      - "9000:9000"
+#    volumes:
+#      - s3-vol:/data
+#    environment:
+#      MINIO_ACCESS_KEY: sharetribe
+#      MINIO_SECRET_KEY: sharetribe
   db:
-    image: mysql:5.7.29
+    image: sharetribe/db
+    build: ./db
     ports:
       - "3306:3306"
     volumes:
@@ -41,21 +56,10 @@ services:
       MYSQL_USER: sharetribe
       MYSQL_PASSWORD: sharetribe
       MYSQL_ROOT_PASSWORD: 'Wipro@123'
-#  s3:
-#    image: minio/minio
-#    ports:
-#      - "9000:9000"
-#    environment:
-#      MINIO_ACCESS_KEY: sharetribe
-#      MINIO_SECRET_KEY: sharetribe
-#    command:
-#      - minio
-#      - server
-#      - /data
-#    volumes:
-#      - s3-vol:/data
 volumes:
   mysql-data:
+    driver: local
+  image-vol:
     driver: local
 #  s3-vol:
 #    driver: local
