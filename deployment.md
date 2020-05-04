@@ -111,6 +111,16 @@ Based on initial understanding of the readme the sharetribe deployment will have
 	docker-compose exec web bundle exec rake assets:precompile
 	```
 
+12. **TODO** Fix sphinxsearch installation so, as an intermediate step install and start sphinxsearch
+
+	**NOTE** Ensure that the `SPHINX_HOST` is set to localhost in the `web.env`
+
+	``` sh
+	docker-compose exec --user=root -T web apt-get install -y sphinxsearch
+	docker-compose exec -T web bundle exec rake ts:index ts:configure ts:start
+	```
+
+
 ### Links ###
 
 - [Deploying on Amazon AWS (Free-Tier) with EC2, RDS & S3](https://gist.github.com/pcm211/10950bf5447a51fdcd1c)
